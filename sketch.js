@@ -1,0 +1,123 @@
+let xBolinha = 300;
+let yBolinha = 200;
+let diametro = 22;
+let raio = diametro /2;
+
+let velocidadexBolinha = 8;
+let velocidadeyBolinha = 8;
+
+//variaveis da raquete
+let xRaquete = 5;
+let yRaquete = 150;
+let Raquetecomprimento = 10;
+let Raquetealtura = 90;
+let colidiu = false
+ //variaveis da raquete oponente
+let xRaqueteOponenteFantasma = 585;
+let yRaqueteOponenteFantasma = 150;
+let velocidadeyOponente;
+
+//PlacardoJogo
+let MeusPontos = 0;
+let PontosOponenteFantasma = 0;
+
+function setup() {
+  createCanvas(600, 400);
+}
+
+function draw() {
+  background(0);
+  mostraBolinha();
+  movimentaBolinha();
+  verificaColisaoBorda();
+  mostraRaquete();
+  movimentaMinhaRaquete();
+  verificaColisaoRaquete();
+  mostraRaqueteOponenteFantasma();
+  movimentaRaqueteOponenteFantasma();
+  verificaColisaoRaqueteOponenteFantasma();
+  incluirPlacar();
+  marcaPonto();
+  
+ }
+
+function mostraBolinha(){
+  circle(xBolinha, yBolinha, diametro);
+  }
+
+function movimentaBolinha(){
+  xBolinha += velocidadexBolinha;
+  yBolinha += velocidadeyBolinha;
+}
+
+function verificaColisaoBorda(){
+  if (xBolinha > width || 
+      xBolinha < 0){
+    velocidadexBolinha *= -1;
+  }
+  if (yBolinha > height || 
+      yBolinha < 0){
+    velocidadeyBolinha *= -1;
+  }
+}
+
+function mostraRaquete(){
+  rect(xRaquete, yRaquete, Raquetecomprimento, Raquetealtura);
+}
+ function mostraRaqueteOponenteFantasma(){
+   rect(xRaqueteOponenteFantasma, yRaqueteOponenteFantasma, Raquetecomprimento, Raquetealtura);
+ }
+
+
+function movimentaMinhaRaquete(){
+  if (keyIsDown(UP_ARROW)){
+    yRaquete -= 10;
+  }
+  if (keyIsDown(DOWN_ARROW)){
+    yRaquete += 10;
+  }
+}
+
+function verificaColisaoRaquete(){
+  if(xBolinha - raio < xRaquete + Raquetecomprimento && yBolinha - raio < yRaquete + Raquetealtura && yBolinha + raio > yRaquete){
+    velocidadexBolinha *= -1;
+  }
+}
+
+
+    
+
+function movimentaRaqueteOponenteFantasma(){
+ velocidadeyOponenteFantasma = yBolinha - yRaqueteOponenteFantasma - Raquetecomprimento /2 - 30;
+  yRaqueteOponenteFantasma += velocidadeyOponenteFantasma
+}
+
+function verificaColisaoRaqueteOponenteFantasma(){
+ if(xBolinha - raio < xRaqueteOponenteFantasma + Raquetecomprimento &&  - raio < yRaqueteOponenteFantasma + Raquetealtura && yBolinha - raio > yRaqueteOponenteFantasma){
+   velocidadexBolinha *= 1;
+   velocidadeyBolinha *= 1;
+ } 
+}
+
+function incluirPlacar(){
+  stroke(255, 0, 0);
+  textAlign(CENTER);
+  textSize(24);
+  fill(color(255, 140, 0));
+  rect(150, 10, 40, 20);
+  fill(255);
+  text(MeusPontos, 170, 26);
+  fill(color(255, 140, 0));
+  rect(450, 10, 40, 20);
+  fill(255);
+  text(PontosOponenteFantasma, 470, 26);
+}
+
+function marcaPonto(){
+  if(xBolinha > 590){
+    MeusPontos += 1;
+  }
+  if(xBolinha < 10){
+    PontosOponenteFantasma += 1;
+  }
+}
